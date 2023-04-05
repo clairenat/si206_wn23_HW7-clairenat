@@ -228,21 +228,21 @@ class TestAllMethods(unittest.TestCase):
         self.assertEqual(c, [('Teden Mengi', 'Defence', 2002)])
     
     # test extra credit
-    def test_make_winners_table(self):
-        self.cur2.execute('SELECT * from Winners')
-        winners_list = self.cur2.fetchall()
+    # def test_make_winners_table(self):
+    #     self.cur2.execute('SELECT * from Winners')
+    #     winners_list = self.cur2.fetchall()
 
-        pass
+        # pass
 
-    def test_make_seasons_table(self):
-        self.cur2.execute('SELECT * from Seasons')
-        seasons_list = self.cur2.fetchall()
+    # def test_make_seasons_table(self):
+    #     self.cur2.execute('SELECT * from Seasons')
+    #     seasons_list = self.cur2.fetchall()
 
-        pass
+        # pass
 
-    def test_winners_since_search(self):
+    # def test_winners_since_search(self):
 
-        pass
+        # pass
 
 
 def main():
@@ -253,8 +253,6 @@ def main():
     cur, conn = open_database('Football.db')
     make_positions_table(json_data, cur, conn)
     make_players_table(json_data, cur, conn)
-    # tester = nationality_search(['England'], cur, conn)
-    # print(tester)
     conn.close()
 
 
