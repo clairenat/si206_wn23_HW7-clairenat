@@ -1,8 +1,8 @@
 
-# Your name:
-# Your student id:
-# Your email:
-# List who you have worked with on this project:
+# Your name: Claire Callen
+# Your student id: 4291 6162
+# Your email: claireca@umich.edu
+# List who you have worked with on this project: Julianna Ross
 
 import unittest
 import sqlite3
@@ -53,7 +53,14 @@ def make_positions_table(data, cur, conn):
 #     created for you -- see make_positions_table above for details.
 
 def make_players_table(data, cur, conn):
-    pass
+    cur.execute('CREATE TABLE IF NOT EXISTS Players (id INTEGER PRIMARY KEY, name TEXT UNIQUE, position_id INTEGER, birthyear INTEGER, nationality TEXT, FOREIGN KEY (position_id) REFERENCES Positions(id))')
+    for player in data['squad']:
+        position = player['position']
+        positionid = cur.execute('SELECT id FROM Positions WHERE Positions.position = ?', [position]).fetchone()[0]
+        birth = player['dateOfBirth'].split("-")[0]
+        year = int(birth)
+        cur.execute("INSERT OR IGNORE INTO Players (id, name, position_id, birthyear, nationality) VALUES (?, ?, ?, ?, ?)",(player['id'], player['name'], positionid, year, player['nationality']))
+    conn.commit()
 
 ## [TASK 2]: 10 points
 # Finish the function nationality_search
@@ -64,9 +71,15 @@ def make_players_table(data, cur, conn):
     # It selects all the players from any of the countries in the list
     # and returns a list of tuples. Each tuple contains:
         # the player's name, their position_id, and their nationality.
-
+    
 def nationality_search(countries, cur, conn):
-    pass
+    final_lst = []
+    for country in countries:
+        cur.execute('SELECT name, position_id, nationality FROM Players WHERE Players.nationality = ?', [country])
+        for row in cur:
+            final_lst.append(row)
+    return final_lst
+
 
 ## [TASK 3]: 10 points
 # finish the function birthyear_nationality_search
@@ -230,6 +243,8 @@ def main():
     cur, conn = open_database('Football.db')
     make_positions_table(json_data, cur, conn)
     make_players_table(json_data, cur, conn)
+    # tester = nationality_search(['England'], cur, conn)
+    # print(tester)
     conn.close()
 
 
