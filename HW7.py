@@ -123,7 +123,12 @@ def birthyear_nationality_search(age, country, cur, conn):
     # HINT: You'll have to use JOIN for this task.
 
 def position_birth_search(position, age, cur, conn):
-       pass
+    final_lst = []
+    cur.execute('SELECT Players.name, Positions.position, Players.birthyear FROM Players JOIN POSITIONS ON Players.position_id = Positions.id WHERE Positions.position = ?', [position])
+    for row in cur:
+        if 2023 - age < row[-1]:
+            final_lst.append(row)
+    return final_lst
 
 
 # [EXTRA CREDIT]
